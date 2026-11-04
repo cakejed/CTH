@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact | Connect with Us Now — Crush the House</title>
+<meta name="description" content="Get in touch with Crush the House for inquiries or support. Fill out our contact form or use the provided details to connect with our team today.">
+<link rel="canonical" href="https://www.crushthehouse.com/contact">
+<meta property="og:site_name" content="Crush the House">
+<meta property="og:title" content="Contact | Connect with Us Now — Crush the House">
+<meta property="og:description" content="Get in touch with Crush the House for inquiries or support. Fill out our contact form or use the provided details to connect with our team today.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.crushthehouse.com/contact">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/logo.webp" type="image/webp">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#page">Skip to Content</a>
+<header class="site-header">
+  <a class="logo" href="/"><img src="/logo.webp" alt="Crush the House" width="300" height="200"></a>
+  <nav class="site-nav">
+    <a href="/">About</a>
+    <a href="/contact" aria-current="page">Contact</a>
+    <a href="/new-page">Privacy Policy</a>
+  </nav>
+</header>
+
+<main id="page">
+  <section class="contact">
+    <div>
+      <h1 class="display">Contact Us</h1>
+      <div class="intro">
+        <p>Please feel free to reach out using the contact information below, or simply complete the form and we’ll be in touch</p>
+        <p><a href="mailto:apply@crushthehouse.com">apply@crushthehouse.com</a><br>
+        <a href="tel:+16037141930">(603) 714-1930</a></p>
+      </div>
+    </div>
+
+    <div>
+      <form id="contact-form" action="/api/contact" method="post" novalidate>
+        <div class="field">
+          <div class="group-label">Name</div>
+          <div class="row">
+            <div>
+              <label for="fname">First Name <span class="req">(required)</span></label>
+              <input id="fname" name="fname" type="text" autocomplete="given-name" required>
+            </div>
+            <div>
+              <label for="lname">Last Name <span class="req">(required)</span></label>
+              <input id="lname" name="lname" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="req">(required)</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <!-- honeypot -->
+        <input type="text" name="company" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <button type="submit">Send</button>
+        <div class="form-status" role="status" aria-live="polite"></div>
+      </form>
+
+      <p class="sms-consent">SMS Consent: By submitting, you agree to receive text messages at the provided number from Vantage Plays LLC d/b/a Crush the House. Message frequency varies, and standard message and data rates may apply. You have the right to OPT-OUT receiving messages at any time. To OPT-OUT, reply "STOP" to any text message you receive from us. Reply HELP for assistance.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 Vantage Plays LLC d/b/a Crush the House. All rights reserved.</p>
+  <p>514 Americas Way, PMB 24023<br>Box Elder, SD 57719</p>
+</footer>
+
+<script>
+(() => {
+  const form = document.getElementById('contact-form');
+  const status = form.querySelector('.form-status');
+  const btn = form.querySelector('button');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    if (!data.fname.trim() || !data.lname.trim() || !/^\S+@\S+\.\S+$/.test(data.email)) {
+      status.textContent = 'Please fill in your first name, last name and a valid email.';
+      return;
+    }
+    btn.disabled = true; status.textContent = 'Sending…';
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+      });
+      if (!r.ok) throw new Error();
+      form.reset();
+      status.textContent = 'Thank you! We’ll be in touch.';
+    } catch {
+      status.textContent = 'Something went wrong. Please email apply@crushthehouse.com.';
+    } finally { btn.disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/about", "destination": "/", "permanent": true },
+    { "source": "/privacy-policy", "destination": "/new-page", "permanent": true },
+    { "source": "/cart", "destination": "/", "permanent": false }
+  ]
+}
