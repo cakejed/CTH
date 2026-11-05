@@ -47,7 +47,6 @@ a { color: inherit; }
   display: flex; align-items: center; justify-content: space-between;
   height: 84px;
 }
-.logo img { width: 84px; height: auto; display: block; }
 .site-nav { display: flex; gap: 32px; }
 .site-nav a {
   position: relative; color: var(--accent); text-decoration: none;
@@ -180,7 +179,6 @@ a { color: inherit; }
 @media (max-width: 560px) {
   body { font-size: 16px; }
   .site-header .container { height: 68px; }
-  .logo img { width: 62px; }
   .site-nav { gap: 18px; }
   .site-nav a { font-size: 14.5px; }
   .hero { padding-top: 56px; padding-bottom: 36px; }
@@ -192,3 +190,28 @@ a { color: inherit; }
   .form-card .row > div { margin-bottom: 20px; }
   .privacy, .contact { padding-top: 48px; }
 }
+
+/* ---------- Logo hammer animation ---------- */
+.logo { position: relative; display: block; width: 84px; aspect-ratio: 3 / 2; }
+.logo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.logo-hammer { transform-origin: 76% 54%; }       /* pivot at the end of the handle */
+.logo-house  { transform-origin: 46% 78%; }
+.logo.strike .logo-hammer { animation: hammer-strike .75s cubic-bezier(.3, 0, .2, 1) both; }
+.logo.strike .logo-house  { animation: house-jolt .75s ease-out both; }
+
+@keyframes hammer-strike {
+  0%   { transform: rotate(0deg); }
+  38%  { transform: rotate(34deg); }                                   /* wind up */
+  52%  { transform: rotate(-7deg); animation-timing-function: ease-out; } /* impact */
+  64%  { transform: rotate(4deg); }
+  78%  { transform: rotate(-1.5deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes house-jolt {
+  0%, 50% { transform: none; }
+  55%  { transform: translate(-2px, 1px) rotate(-3deg) scale(.97, 1.02); }
+  66%  { transform: translate(1px, 0) rotate(1.5deg); }
+  80%  { transform: rotate(-.5deg); }
+  100% { transform: none; }
+}
+@media (max-width: 560px) { .logo { width: 62px; } }

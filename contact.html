@@ -19,7 +19,10 @@
 <a class="skip" href="#page">Skip to Content</a>
 <header class="site-header">
   <div class="container">
-    <a class="logo" href="/"><img src="/logo.webp" alt="Crush the House" width="300" height="200"></a>
+    <a class="logo" href="/" aria-label="Crush the House home">
+      <img class="logo-house" src="/logo-house.webp" alt="" width="300" height="200">
+      <img class="logo-hammer" src="/logo-hammer.webp" alt="" width="300" height="200">
+    </a>
     <nav class="site-nav" aria-label="Main">
       <a href="/">About</a>
       <a href="/contact" aria-current="page">Contact</a>
@@ -109,6 +112,21 @@
       status.textContent = 'Something went wrong. Please email apply@crushthehouse.com.';
     } finally { btn.disabled = false; }
   });
+})();
+</script>
+<script>
+(() => {
+  const logo = document.querySelector('.logo');
+  if (!logo || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const play = () => {
+    if (logo.classList.contains('strike')) return;
+    logo.classList.add('strike');
+  };
+  logo.querySelector('.logo-hammer').addEventListener('animationend', () => logo.classList.remove('strike'));
+  logo.addEventListener('mouseenter', play);
+  logo.addEventListener('focus', play);
+  logo.addEventListener('touchstart', play, { passive: true });
+  window.addEventListener('load', () => setTimeout(play, 300));
 })();
 </script>
 </body>
