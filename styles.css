@@ -91,7 +91,7 @@ a { color: inherit; }
 .accordion summary::-webkit-details-marker { display: none; }
 .accordion .icon {
   position: relative; flex: none; width: 34px; height: 34px; border-radius: 50%;
-  border: 2px solid var(--accent); transition: background .2s ease, transform .25s ease;
+  border: 2px solid var(--accent); transition: background .3s ease, transform .38s cubic-bezier(.2, .7, .2, 1);
 }
 .accordion .icon::before, .accordion .icon::after {
   content: ''; position: absolute; left: 50%; top: 50%;
@@ -99,10 +99,11 @@ a { color: inherit; }
   transform: translate(-50%, -50%);
 }
 .accordion .icon::after { transform: translate(-50%, -50%) rotate(90deg); transition: opacity .2s; }
-.accordion details[open] .icon { background: var(--accent); transform: rotate(180deg); }
-.accordion details[open] .icon::before { background: var(--card); }
-.accordion details[open] .icon::after { opacity: 0; }
-.accordion .body { padding: 0 28px 26px; }
+.accordion details[open]:not(.closing) .icon { background: var(--accent); transform: rotate(180deg); }
+.accordion details[open]:not(.closing) .icon::before { background: var(--card); }
+.accordion details[open]:not(.closing) .icon::after { opacity: 0; }
+.accordion .body { overflow: hidden; }
+.accordion .body p { padding: 0 28px 26px; }
 .accordion .body p { margin: 0; color: var(--ink-soft); max-width: 68ch; }
 
 /* ---------- Contact ---------- */
@@ -151,9 +152,9 @@ a { color: inherit; }
 
 /* ---------- Privacy ---------- */
 .privacy { padding-top: 88px; padding-bottom: 112px; }
-.privacy h1 { font-size: clamp(40px, 6vw, 72px); }
+.privacy h1 { font-size: clamp(40px, 6vw, 72px); text-align: center; }
 .privacy .policy {
-  max-width: 760px; margin-top: 40px;
+  max-width: 760px; margin: 40px auto 0;
   background: var(--card); border-radius: var(--radius); padding: 40px;
 }
 .privacy h2 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
@@ -183,7 +184,7 @@ a { color: inherit; }
   .site-nav a { font-size: 14.5px; }
   .hero { padding-top: 56px; padding-bottom: 36px; }
   .accordion summary { padding: 20px; }
-  .accordion .body { padding: 0 20px 22px; }
+  .accordion .body p { padding: 0 20px 22px; }
   .accordion .icon { width: 30px; height: 30px; }
   .form-card, .privacy .policy { padding: 24px; }
   .form-card .row { grid-template-columns: 1fr; gap: 0; }
@@ -215,3 +216,36 @@ a { color: inherit; }
   100% { transform: none; }
 }
 @media (max-width: 560px) { .logo { width: 62px; } }
+
+/* ---------- Headline animation ---------- */
+.hero-title .word { display: inline-block; }
+.hero-title .accent { color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title .word {
+    opacity: 0;
+    animation: word-slam .55s cubic-bezier(.2, .9, .25, 1.25) both;
+    animation-delay: calc(150ms + var(--i) * 110ms);
+  }
+  .hero-title { animation: title-shake .35s ease-out 840ms both; }
+  .hero .lead { animation: fade-up .7s ease-out 900ms both; }
+  .accordion details { animation: fade-up .6s ease-out both; }
+  .accordion details:nth-child(1) { animation-delay: 1050ms; }
+  .accordion details:nth-child(2) { animation-delay: 1130ms; }
+  .accordion details:nth-child(3) { animation-delay: 1210ms; }
+  .accordion details:nth-child(4) { animation-delay: 1290ms; }
+}
+@keyframes word-slam {
+  0%   { opacity: 0; transform: translateY(-38px) scale(1.35) rotate(-4deg); filter: blur(6px); }
+  60%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes title-shake {
+  0%, 100% { transform: none; }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(3px, -1px); }
+  75% { transform: translate(-1px, 1px); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}

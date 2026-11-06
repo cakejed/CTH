@@ -34,7 +34,7 @@
 
 <main id="page">
   <section class="hero container">
-    <h1 class="display">Get in on Advantage Play</h1>
+    <h1 class="display hero-title" aria-label="Get in on Advantage Play"><span class="word" style="--i:0" aria-hidden="true">Get</span> <span class="word" style="--i:1" aria-hidden="true">in</span> <span class="word" style="--i:2" aria-hidden="true">on</span> <span class="word accent" style="--i:3" aria-hidden="true">Advantage</span> <span class="word accent" style="--i:4" aria-hidden="true">Play</span></h1>
     <p class="lead">Advantage play is the method of turning the tables on chance. Think of it like card counting in blackjack. Not a guarantee that every bet is a win, but a smart way to tip the odds in your favor. It’s about seeing what others miss, finding edges, and stacking them until the game plays by your rules.</p>
   </section>
 
@@ -81,6 +81,43 @@
   logo.addEventListener('focus', play);
   logo.addEventListener('touchstart', play, { passive: true });
   window.addEventListener('load', () => setTimeout(play, 300));
+})();
+</script>
+<script>
+(() => {
+  // Smooth open/close for the accordion
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.accordion details').forEach((d) => {
+    const summary = d.querySelector('summary');
+    const body = d.querySelector('.body');
+    let anim = null;
+    summary.addEventListener('click', (e) => {
+      if (reduce) return;
+      e.preventDefault();
+      const opening = !d.open || d.classList.contains('closing');
+      const start = d.open ? body.offsetHeight : 0;
+      if (anim) anim.cancel();
+      d.classList.remove('closing');
+      if (opening) {
+        d.open = true;
+        const end = body.scrollHeight;
+        anim = body.animate(
+          [{ height: start + 'px', opacity: 0, transform: 'translateY(-6px)' },
+           { height: end + 'px', opacity: 1, transform: 'none' }],
+          { duration: 380, easing: 'cubic-bezier(.2, .7, .2, 1)' });
+      } else {
+        d.classList.add('closing');
+        anim = body.animate(
+          [{ height: start + 'px', opacity: 1 }, { height: '0px', opacity: 0 }],
+          { duration: 280, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+      }
+      anim.onfinish = () => {
+        if (!opening) { d.open = false; d.classList.remove('closing'); }
+        const done = anim; anim = null;
+        done.cancel();
+      };
+    });
+  });
 })();
 </script>
 </body>
